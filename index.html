@@ -1,17 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ping Pong Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Tennis Mobile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <div id="menu">
-        <h1>Ping Pong</h1>
-        <button id="start-button">Start</button>
+    <div class="container">
+        <h2>Bienvenue sur Tennis Mobile</h2>
+        <button onclick="window.location.href='match.html'">Démarrer un match</button>
+        <button onclick="viewScores()">Voir les scores</button>
     </div>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <script src="script.js"></script>
+
+    <script>
+        function startMatch() {
+            alert("Fonction à implémenter : Démarrer un match");
+        }
+        
+        function viewScores() {
+            alert("Fonction à implémenter : Voir les scores");
+        }
+    </script>
 </body>
 </html>

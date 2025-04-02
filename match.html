@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match de Tennis 2D</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        canvas {
+            display: block;
+            margin: auto;
+            background: #77dd77;
+            border-bottom: 5px solid white;
+        }
+    </style>
+</head>
+<body>
+    <h2>Match de Tennis 2D</h2>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const paddleWidth = 10, paddleHeight = 80;
+        let playerY = (canvas.height - paddleHeight) / 2;
+        let botY = (canvas.height - paddleHeight) / 2;
+        let ballX = canvas.width / 2, ballY = canvas.height / 2;
+        let ballSpeedX = 4, ballSpeedY = 4;
+        let playerScore = 0, botScore = 0;
+
+        document.addEventListener("mousemove", (e) => {
+            let rect = canvas.getBoundingClientRect();
+            let root = document.documentElement;
+            let mouseY = e.clientY - rect.top - root.scrollTop;
+            playerY = mouseY - paddleHeight / 2;
+        });
+
+        function moveBot() {
+            let botCenter = botY + paddleHeight / 2;
+            if (botCenter < ballY - 20) {
+                botY += 6;
+            } else if (botCenter > ballY + 20) {
+                botY -= 6;
+            }
+        }
+
+        function updateGame() {
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+            moveBot();
+
+            if (ballY <= 0 || ballY >= canvas.height) {
+                ballSpeedY *= -1;
+            }
+
+            if (ballX <= 20 && ballY > playerY && ballY < playerY + paddleHeight) {
+                ballSpeedX *= -1;
+            } else if (ballX >= canvas.width - 20 && ballY > botY && ballY < botY + paddleHeight) {
+                ballSpeedX *= -1;
+            }
+
+            if (ballX < 0) {
+                botScore++;
+                resetBall();
+            } else if (ballX > canvas.width) {
+                playerScore++;
+                resetBall();
+            }
+
+            drawGame();
+            checkWinner();
+        }
+
+        function resetBall() {
+            ballX = canvas.width / 2;
+            ballY = canvas.height / 2;
+            ballSpeedX *= -1;
+        }
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            ctx.fillRect(10, playerY, paddleWidth, paddleHeight);
+            ctx.fillRect(canvas.width - 20, botY, paddleWidth, paddleHeight);
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillText(`Joueur: ${playerScore} - Bot: ${botScore}`, canvas.width / 2 - 40, 20);
+        }
+
+        function checkWinner() {
+            if (playerScore >= 10) {
+                alert("Tu as gagné !");
+                document.location.reload();
+            } else if (botScore >= 10) {
+                alert("Le bot a gagné !");
+                document.location.reload();
+            }
+        }
+
+        setInterval(updateGame, 1000 / 60);
+    </script>
+</body>
+</html>
+<!-- Compare this snippet from index.html: -->
